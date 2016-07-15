@@ -62,6 +62,7 @@ describe BillboardTop100::Song do
 end
 
 describe BillboardTop100::Scraper do
+  
   describe "#get_page" do
     it 'gets the page' do
       expect(BillboardTop100::Scraper.new.get_page).should_not be(nil)
@@ -71,7 +72,19 @@ describe BillboardTop100::Scraper do
     it 'collects 100 songs' do
       doc = BillboardTop100::Scraper.new
       doc.collect_songs
-      expect(doc.display_songs).to eq(100)
+      expect(doc.display_songs.length).to eq(100)
+    end
+    it 'creates an array of hashes' do
+      doc = BillboardTop100::Scraper.new
+      doc.collect_songs
+      expect(doc.display_songs).to be_instance_of(Array)
+      expect(doc.display_songs[0]).to be_instance_of(Hash)
+    end
+    it 'includes attributes' do
+      doc = BillboardTop100::Scraper.new
+      doc.collect_songs
+      expect(doc.display_songs[0]).to have_key(:title)
     end
   end
+
 end
