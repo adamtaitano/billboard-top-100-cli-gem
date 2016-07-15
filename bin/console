@@ -12,3 +12,5 @@ require "billboard_top_100"
 
 require "irb"
 IRB.start
+
+puts "Hello"
