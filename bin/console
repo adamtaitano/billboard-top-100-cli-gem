@@ -11,6 +11,6 @@ require "billboard_top_100"
 # Pry.start
 
 require "irb"
-IRB.start
-
 puts "Hello"
+
+IRB.start
