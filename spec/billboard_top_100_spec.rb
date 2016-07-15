@@ -97,19 +97,26 @@ describe BillboardTop100::CLI do
       expect(cli).to receive(:start)
       cli.call
     end
+    it 'should introduce' do
+    expect(STDOUT).to receive(:puts).with("Please enter the number of songs you would like to see (e.g. 15)")
+    require_relative './../lib/billboard_top_100/cli.rb'
+    cli = BillboardTop100::CLI.new
+    cli.start
+    end
   end
   describe '#start' do
-    it 'should introduce' do
-      expect(STDOUT).to receive(:puts).with("Welcome to the Billboard Top 100 Songs!")
-      require_relative './../billboard_top_100/cli.rb'
-    end
     it 'should ask for input' do
-      STDIN.should_receive(:gets)
+      expect(STDOUT).to receive(:puts).with("Please enter the number of songs you would like to see (e.g. 15)")
+      require_relative './../lib/billboard_top_100/cli.rb'
+      cli = BillboardTop100::CLI.new
+      cli.start
     end
-    it 'should ask if user is done' do
-      expect(STDOUT).to receive(:puts).with("Would you like to see more songs? Enter 'Y' or 'N'")
-      require_relative './../billboard_top_100/cli.rb'
-    end
+    # it 'should ask if user is done' do
+    #   expect(STDOUT).to receive(:puts).with("Would you like to see more songs? Enter 'Y' or 'N'")
+    #   require_relative './../lib/billboard_top_100/cli.rb'
+    #   cli = BillboardTop100::CLI.new
+    #   cli.start
+    # end
   end
   describe '#print_songs' do
     cli = BillboardTop100::CLI.new
