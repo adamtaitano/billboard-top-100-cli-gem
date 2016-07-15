@@ -147,10 +147,13 @@ describe BillboardTop100::Song do
       it 'contains 100 songs' do
         expect(BillboardTop100::Song.all.length).to eql(100)
       end
+      it 'calls upon Scraper' do
+        expect(BillboardTop100::Song.all).to receive(BillboardTop100::Scraper)
+      end
     end
     describe ".find" do
       it 'accepts a song position as an argument' do
-        expect { BillboardTop100::Song.find(1) }.to_not raise_error
+        expect { BillboardTop100::Song.find("1") }.to_not raise_error
       end
       it 'returns a hash' do
         expect(BillboardTop100::Song.find(1)).to be_instance_of(Hash)
@@ -172,11 +175,7 @@ describe BillboardTop100::Song do
         expect(BillboardTop100::Song.new(attributes)).to_not raise_error
       end
       it 'calls upon #send' do
-        expect(BillboardTop100::Song.new).to receive(:send)
-      end
-      it 'calls upon Scraper' do
-        expect(song).to receive(:BillboardTop100::Scraper)
-        song = BillboardTop100::Song.new
+        expect(BillboardTop100::Song.new(attributes)).to receive(:send)
       end
     end
   end
