@@ -89,51 +89,95 @@ require 'spec_helper'
 #
 # end
 
-describe BillboardTop100::CLI do
+# describe BillboardTop100::CLI do
+#
+#   describe '#call' do
+#     it 'calls upon #start' do
+#       cli = BillboardTop100::CLI.new
+#       expect(cli).to receive(:start)
+#       cli.call
+#     end
+#     it 'should introduce' do
+#     expect(STDOUT).to receive(:puts).with("Please enter the number of songs you would like to see (e.g. 15)")
+#     require_relative './../lib/billboard_top_100/cli.rb'
+#     cli = BillboardTop100::CLI.new
+#     cli.start
+#     end
+#   end
+#   describe '#start' do
+#     it 'should ask for input' do
+#       expect(STDOUT).to receive(:puts).with("Please enter the number of songs you would like to see (e.g. 15)")
+#       require_relative './../lib/billboard_top_100/cli.rb'
+#       cli = BillboardTop100::CLI.new
+#       cli.start
+#     end
+#     # it 'should ask if user is done' do
+#     #   expect(STDOUT).to receive(:puts).with("Would you like to see more songs? Enter 'Y' or 'N'")
+#     #   require_relative './../lib/billboard_top_100/cli.rb'
+#     #   cli = BillboardTop100::CLI.new
+#     #   cli.start
+#     # end
+#   end
+#   describe '#print_songs' do
+#     cli = BillboardTop100::CLI.new
+#     it 'should print formatted songs' do
+#       expect(cli.print_songs).to include("1. One Dance - Drake Featuring WizKid & Kyla")
+#     end
+#     it 'should accept an argument of number(s) integer' do
+#       expect { cli.print_songs(1) }.to_not raise_error
+#     end
+#   end
+#   describe '#print_song' do
+#     cli = BillboardTop100::CLI.new
+#     it 'should accept a specific chart number' do
+#       expect { cli.print_song(1) }.to_not raise_erro
+#     end
+#     it 'should print details about the song' do
+#       expect(cli.print_songs).to include("Last Week's Position = 1")
+#     end
+#   end
+# end
 
-  describe '#call' do
-    it 'calls upon #start' do
-      cli = BillboardTop100::CLI.new
-      expect(cli).to receive(:start)
-      cli.call
+describe BillboardTop100::Song do
+  context 'Class Methods' do
+    describe ".all" do
+      it 'returns an array' do
+        expect(BillboardTop100::Song.all).to be_instance_of(Array)
+      end
+      it 'contains 100 songs' do
+        expect(BillboardTop100::Song.all.length).to eql(100)
+      end
     end
-    it 'should introduce' do
-    expect(STDOUT).to receive(:puts).with("Please enter the number of songs you would like to see (e.g. 15)")
-    require_relative './../lib/billboard_top_100/cli.rb'
-    cli = BillboardTop100::CLI.new
-    cli.start
+    describe ".find" do
+      it 'accepts a song position as an argument' do
+        expect { BillboardTop100::Song.find(1) }.to_not raise_error
+      end
+      it 'returns a hash' do
+        expect(BillboardTop100::Song.find(1)).to be_instance_of(Hash)
+      end
     end
-  end
-  describe '#start' do
-    it 'should ask for input' do
-      expect(STDOUT).to receive(:puts).with("Please enter the number of songs you would like to see (e.g. 15)")
-      require_relative './../lib/billboard_top_100/cli.rb'
-      cli = BillboardTop100::CLI.new
-      cli.start
-    end
-    # it 'should ask if user is done' do
-    #   expect(STDOUT).to receive(:puts).with("Would you like to see more songs? Enter 'Y' or 'N'")
-    #   require_relative './../lib/billboard_top_100/cli.rb'
-    #   cli = BillboardTop100::CLI.new
-    #   cli.start
-    # end
-  end
-  describe '#print_songs' do
-    cli = BillboardTop100::CLI.new
-    it 'should print formatted songs' do
-      expect(cli.print_songs).to include("1. One Dance - Drake Featuring WizKid & Kyla")
-    end
-    it 'should accept an argument of number(s) integer' do
-      expect { cli.print_songs(1) }.to_not raise_error
+    describe ".find_by_name" do
+      it 'accepts a string as an argument' do
+        expect { BillboardTop100::Song.find_by_name("One Dance") }.to_not raise_error
+      end
+      it 'returns the appropriate song' do
+        expect{ BillboardTop100::Song.find_by_name("One Dance") }.to eq({:title => "One Dance", :artist => "Drake Featuring WizKid & Kyla", :position => "1", :peak => "1", :last_week_position => "1", :weeks_on_chart => "14"})
+      end
     end
   end
-  describe '#print_song' do
-    cli = BillboardTop100::CLI.new
-    it 'should accept a specific chart number' do
-      expect { cli.print_song(1) }.to_not raise_erro
-    end
-    it 'should print details about the song' do
-      expect(cli.print_songs).to include("Last Week's Position = 1")
+  context 'Instance Methods' do
+    describe 'initialize' do
+      attributes = {:title => "One Dance", :artist => "Drake Featuring WizKid & Kyla", :position => "1", :peak => "1", :last_week_position => "1", :weeks_on_chart => "14"}
+      it 'accepts attributes' do
+        expect(BillboardTop100::Song.new(attributes)).to_not raise_error
+      end
+      it 'calls upon #send' do
+        expect(BillboardTop100::Song.new).to receive(:send)
+      end
+      it 'calls upon Scraper' do
+        expect(song).to receive(:BillboardTop100::Scraper)
+        song = BillboardTop100::Song.new
+      end
     end
   end
 end
